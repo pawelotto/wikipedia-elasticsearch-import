@@ -1,0 +1,22 @@
+{
+  "name": "wikipedia-import-dump",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/config": "0.0.34",
+    "@types/mongodb": "^2.2.20",
+    "@types/node": "^10.0.6",
+    "config": "^1.30.0",
+    "mongodb": "^2.2.35",
+    "xml-nodes": "^0.1.5",
+    "xml-objects": "^1.0.1"
+  }
+}
