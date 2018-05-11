@@ -3,7 +3,7 @@ import { Writable } from 'stream'
 import db from './db'
 
 export default function(db: Db, collection: string): Writable {
-  console.log('Writing documents')
+  console.log('Writing documents to MongoDB...')
   db.collection(collection).createIndex({ title: 1 })
   let c=0
   const writer: Writable = new Writable({ 
