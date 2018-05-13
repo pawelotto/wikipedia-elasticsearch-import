@@ -3,5 +3,6 @@
   "dbString": "mongodb://wikipedia:nwl45d6cNqw94ox56@tensor:27017/wikipedia?authSource=admin&ssl=true",
   "dbCollection": "pages",
   "elasticIndex": "wikipedia",
-  "elasticType": "pages"
+  "elasticType": "pages",
+  "elasticLogFile": "./log/elastic.log"
 }

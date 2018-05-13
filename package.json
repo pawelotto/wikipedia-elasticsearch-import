@@ -15,9 +15,11 @@
     "@types/elasticsearch": "^5.0.23",
     "@types/mongodb": "^2.2.20",
     "@types/node": "^10.0.6",
+    "@types/winston": "^2.3.9",
     "config": "^1.30.0",
     "elasticsearch": "^14.2.2",
     "mongodb": "^2.2.35",
+    "winston": "^2.4.2",
     "xml-nodes": "^0.1.5",
     "xml-objects": "^1.0.1"
   }

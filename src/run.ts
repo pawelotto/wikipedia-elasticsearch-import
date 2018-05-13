@@ -1,4 +1,5 @@
 import db from './functions/db'
+import logHandler from './functions/logger'
 import * as config from 'config'
 import * as xmlNodes from 'xml-nodes'
 import * as xmlObjects from 'xml-objects'
@@ -11,7 +12,9 @@ const inputFile = config.get('inputFile') as string
 const mongoCollection = config.get('dbCollection') as string
 const elasticIndex = config.get('elasticIndex') as string
 const elasticType = config.get('elasticType') as string
+const elasticLogFile = config.get('elasticLogFile') as string
 // const reader = createReadStream(inputFile, { start: 1000, end: 10 * 1000 * 100 })
+const logger = logHandler(elasticLogFile)
 
 // runMongo(inputFile, mongoCollection)
 runElastic(inputFile, elasticIndex, elasticType)
@@ -30,7 +33,7 @@ async function runMongo(inputFile: string, collection: string){
 
 async function runElastic(inputFile: string, elasticIndex: string, elasticType: string){
   const reader = createReadStream(inputFile)
-  const writer = streamWriterElastic(elasticIndex, elasticType)
+  const writer = streamWriterElastic(elasticIndex, elasticType, logger)
   
   reader
     .pipe(xmlNodes('page'))
