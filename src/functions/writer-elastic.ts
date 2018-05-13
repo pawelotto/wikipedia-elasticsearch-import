@@ -26,8 +26,9 @@ export default function(elasticIndex: string, elasticType: string, logger: Logge
         if (++c % 1000 === 0) process.stdout.write(`...${c}`)
         cb()
       } catch (err) {
-        logger.error('error', err.message)
-        cb()
+        logger.error('error', { pageId: chunk.id, elasticMessage: err.message }, () => {
+          cb()
+        })
       }
     }
   })
