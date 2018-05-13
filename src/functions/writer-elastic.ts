@@ -27,6 +27,7 @@ export default function(elasticIndex: string, elasticType: string, logger: Logge
         cb()
       } catch (err) {
         logger.error('error', { pageId: chunk.id, elasticMessage: err.message })
+        cb()
       }
     }
   })
