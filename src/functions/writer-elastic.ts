@@ -2,12 +2,12 @@ import * as elasticsearch from 'elasticsearch'
 import { LoggerInstance } from 'winston'
 import { Writable } from 'stream'
 
-export default function(elasticIndex: string, elasticType: string, logger: LoggerInstance): Writable {
+export default function(elasticHost: string, elasticPort: number, elasticUser: string, elasticPassword: string, elasticIndex: string, elasticType: string, logger: LoggerInstance): Writable {
   console.log('Writing documents to Elasticsearch...')
   const esClient = new elasticsearch.Client({
-    host: 'tensor:9200',
+    host: `${elasticHost}:${elasticPort}`,
     log: false,
-    httpAuth: "elastic:RUqX4HTccAbE6bYkm0K0"
+    httpAuth: `${elasticUser}:${elasticPassword}`
   })
 
   let c = 0

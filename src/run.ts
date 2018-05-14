@@ -10,11 +10,17 @@ import { Db } from 'mongodb'
 
 const inputFile = config.get('inputFile') as string
 const mongoCollection = config.get('dbCollection') as string
+
+const elasticHost = config.get('elasticHost') as string
+const elasticPort = config.get('elasticPort') as number
+const elasticUser = config.get('elasticUser') as string
+const elasticPassword = config.get('elasticPassword') as string
 const elasticIndex = config.get('elasticIndex') as string
 const elasticType = config.get('elasticType') as string
 const elasticLogFile = config.get('elasticLogFile') as string
-// const reader = createReadStream(inputFile, { start: 1000, end: 10 * 1000 * 100 })
+
 const logger = logHandler(elasticLogFile)
+// const reader = createReadStream(inputFile, { start: 1000, end: 10 * 1000 * 100 })
 
 // runMongo(inputFile, mongoCollection)
 runElastic(inputFile, elasticIndex, elasticType)
@@ -33,7 +39,7 @@ async function runMongo(inputFile: string, collection: string){
 
 async function runElastic(inputFile: string, elasticIndex: string, elasticType: string){
   const reader = createReadStream(inputFile)
-  const writer = streamWriterElastic(elasticIndex, elasticType, logger)
+  const writer = streamWriterElastic(elasticHost, elasticPort, elasticUser, elasticPassword, elasticIndex, elasticType, logger)
   
   reader
     .pipe(xmlNodes('page'))
