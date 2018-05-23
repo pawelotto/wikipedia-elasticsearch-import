@@ -1,5 +1,5 @@
 {
-  "inputFile": "/mnt/tensor/Downloads/enwiki-20180401-pages-articles-multistream.xml",
+  "inputFile": "/home/po/Downloads/enwiki-20180401-pages-articles-multistream.xml",
   "dbString": "mongodb://wikipedia:nwl45d6cNqw94ox56@tensor:27017/wikipedia?authSource=admin&ssl=true",
   "dbCollection": "pages",
   "elasticHost": "tensor",
