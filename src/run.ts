@@ -7,6 +7,7 @@ import { createReadStream, createWriteStream } from 'fs'
 import streamWriterMongo from './functions/writer-mongo'
 import streamWriterElastic from './functions/writer-elastic'
 import { Db } from 'mongodb'
+import { LoggerInstance } from 'winston'
 
 const inputFile = config.get('inputFile') as string
 const mongoCollection = config.get('dbCollection') as string
@@ -19,8 +20,7 @@ const elasticIndex = config.get('elasticIndex') as string
 const elasticType = config.get('elasticType') as string
 const elasticLogFile = config.get('elasticLogFile') as string
 
-const logger = logHandler(elasticLogFile)
-// const reader = createReadStream(inputFile, { start: 1000, end: 10 * 1000 * 100 })
+const logger: LoggerInstance = logHandler(elasticLogFile)
 
 // runMongo(inputFile, mongoCollection)
 runElastic(inputFile, elasticIndex, elasticType)
@@ -39,10 +39,10 @@ async function runMongo(inputFile: string, collection: string){
 
 async function runElastic(inputFile: string, elasticIndex: string, elasticType: string){
   const reader = createReadStream(inputFile)
-  const writer = streamWriterElastic(elasticHost, elasticPort, elasticUser, elasticPassword, elasticIndex, elasticType, logger)
+  const writer = streamWriterElastic(elasticHost, elasticPort, elasticIndex, elasticType, logger, elasticUser, elasticPassword)
   
   reader
     .pipe(xmlNodes('page'))
     .pipe(xmlObjects({ explicitRoot: false, explicitArray: false, mergeAttrs: true }))
-    .pipe(writer)
+    .pipe(await writer)
 }
