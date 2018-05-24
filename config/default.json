@@ -1,12 +1,14 @@
 {
-  "inputFile": "/home/po/Downloads/enwiki-20180401-pages-articles-multistream.xml",
-  "dbString": "mongodb://wikipedia:nwl45d6cNqw94ox56@tensor:27017/wikipedia?authSource=admin&ssl=true",
-  "dbCollection": "pages",
+  "inputFile": "/home/po/Downloads/plwiki-20180520-pages-articles-multistream.xml",
+  
   "elasticHost": "tensor",
   "elasticPort": 9200,
   "elasticUser": "elastic",
   "elasticPassword": "RUqX4HTccAbE6bYkm0K 0",
-  "elasticIndex": "wikipedia",
+  "elasticIndex": "wikipedia_pl_20180520",
   "elasticType": "pages",
-  "elasticLogFile": "./log/elastic.log"
+  "elasticLogFile": "./log/elastic.log",
+
+  "dbString": "mongodb://wikipedia:nwl45d6cNqw94ox56@tensor:27017/wikipedia?authSource=admin&ssl=true",
+  "dbCollection": "pages"
 }

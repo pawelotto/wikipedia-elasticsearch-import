@@ -1,4 +1,6 @@
 # wikipedia-import-dump #
 Import Wikipedia dumps into MongoDB and Elasticsearch.
 
-To download the latest Wikipedia dump go to https://dumps.wikimedia.org/wikidatawiki/
+* Wikipedia en dump: https://dumps.wikimedia.org/enwiki/
+* Wikipedia de dump: https://dumps.wikimedia.org/plwiki/
+* Wikidata dump: https://dumps.wikimedia.org/wikidatawiki/
