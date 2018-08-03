@@ -1,24 +1,32 @@
 {
   "name": "wikipedia-import-dump",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": false,
+  "version": "1.0.2",
+  "description": "Import Wikipedia dumps into Elasticsearch",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/run"
+    "start": "node dist/bin/import-elastic",
+    "postinstall": "tsc"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "dumps",
+    "elasticsearch",
+    "wikimedia",
+    "wikipedia"
+  ],
+  "author": "Paweł Otto",
   "license": "ISC",
   "dependencies": {
-    "@types/config": "0.0.34",
     "@types/elasticsearch": "^5.0.23",
+    "@types/fs-extra": "5.0.4",
     "@types/mongodb": "^2.2.20",
     "@types/node": "^10.0.6",
+    "@types/typescript": "2.0.0",
     "@types/winston": "^2.3.9",
-    "config": "^1.30.0",
     "elasticsearch": "^14.2.2",
+    "fs-extra": "7.0.0",
     "mongodb": "^2.2.35",
+    "typescript": "3.0.1",
     "winston": "^2.4.2",
     "xml-nodes": "^0.1.5",
     "xml-objects": "^1.0.1"

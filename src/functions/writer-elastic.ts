@@ -1,58 +1,77 @@
-import * as elasticsearch from 'elasticsearch'
-import { LoggerInstance } from 'winston'
+import { logger } from './logger'
+import { BulkIndexDocumentsParams, Client, IndexDocumentParams } from 'elasticsearch'
 import { Writable } from 'stream'
+import { LoggerInstance } from 'winston'
 
-export default async function(elasticHost: string, elasticPort: number, elasticIndex: string, elasticType: string, logger: LoggerInstance, elasticUser?: string, elasticPassword?: string): Promise<Writable> {
-  console.log('Writing Elasticsearch documents into index ' + elasticIndex + '...')
-
-  const esClient = new elasticsearch.Client({
-    host: `${elasticHost}:${elasticPort}`,
-    log: 'error',
-    httpAuth: `${elasticUser}:${elasticPassword}`
-  })
+export default function({ httpAuth, host, index, port, type }, { mode = 'bulk', limit = 50 }, logHandler: LoggerInstance): Writable {
+  logHandler.log('info', `Writing into Elasticsearch index ${index}...`)
 
   let c = 0
-  let tranche: Array<object> = []
-  let log: Array<string> = []
+  let bulkTranche: BulkIndexDocumentsParams = { body: [] }
 
-  const writer: Writable = new Writable({
+  const client = new Client({
+    host: `${host}:${port}`,
+    log: 'error',
+    ...httpAuth,
+  })
+
+  const writerSingle: Writable = new Writable({
     objectMode: true,
-    async write(chunk: object, enc, cb) {
-      try {
-        const doc = [
-          {
-            index:
-              {
-                _id: chunk['id'],
-                _index: elasticIndex,
-                _type: elasticType,
-              }
-          },
-          { ...chunk }
-        ]
-
-        tranche.push(...doc)
-        log.push(chunk['id'])
-
-        if (++c % 200 === 0) {
-          await esClient.bulk({ body: [...tranche] })
-          log.forEach(logEntry => logger.log('info', `Added pageId: ${logEntry}`))
-          process.stdout.write(`...${c}`)
-          tranche.length = 0
-          log.length = 0
-          cb()
-        } else {
-          cb()
-        }
-      } catch (err) {
-        logger.error('error', { pageId: chunk['id'], elasticMessage: err.message })
-        cb()
+    write(chunk: object, enc, cb) {
+      const doc: IndexDocumentParams<any> = {
+        id: chunk['id'],
+        index,
+        type,
+        body: { ...chunk },
       }
+      client
+        .index(doc)
+        .then(() => cb(undefined))
+        .catch(err => {
+          logHandler.log('error', err)
+          cb(err)
+        })
     }
   })
 
-  writer.on('finish', () => logger.log('info', 'Stream writer ended'))
-  writer.on('error', err => logger.error('error', err.message))
-
+  const writerBulk: Writable = new Writable({
+    objectMode: true,
+    write(chunk: object, enc, cb) {
+      if ((bulkTranche.body.length > 0) && ((bulkTranche.body.length / 2) % limit === 0)) {
+        client
+          .bulk(bulkTranche)
+          .then(() => {
+            c = 0
+            bulkTranche.body.length = 0
+            cb(undefined)
+          })
+          .catch(err => {
+            c = 0
+            bulkTranche.body.length = 0
+            logHandler.log('error', err)
+            cb(err)
+          })
+      } else {
+        bulkTranche.body.push({
+          index: {
+            _id: chunk['id'],
+            _index: index,
+            _type: type,
+          }
+        }, chunk)
+        cb(undefined)
+      }
+    }
+  })
+  const writer = mode === 'bulk' ? writerBulk : writerSingle
+  writer.on('finish', () => {
+    if (mode === 'bulk') {
+      client.bulk(bulkTranche)
+        .then(() => logHandler.log('info', `Finalising writing stream ${index}...`))
+        .catch(err => logHandler.log('error', err))
+    }
+    logHandler.log('info', `Ended writing documents into Elasticsearch index ${index}...`)
+  })
+  writer.on('error', err => logHandler.error('error', err.message))
   return writer
 }
