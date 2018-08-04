@@ -1,4 +1,4 @@
-import { createReadStream, createWriteStream } from 'fs'
+import { createReadStream } from 'fs'
 import * as fs from 'fs-extra'
 import * as xmlNodes from 'xml-nodes'
 import * as xmlObjects from 'xml-objects'
