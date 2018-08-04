@@ -16,17 +16,17 @@ export const logger = (filename: string): LoggerInstance => {
         colorize: false,
         filename: path.join(process.cwd(), filename),
         handleExceptions: true,
+        humanReadableUnhandledException: true,
         json: false,
         level: 'info',
         maxsize: 1024 * 1024 * 20,
-        humanReadableUnhandledException: true,
       }),
       new transports.Console({
         colorize: true,
-        level: 'info',
-        json: false,
         handleExceptions: true,
         humanReadableUnhandledException: true,
+        json: false,
+        level: 'info',
       })
     ]
   }

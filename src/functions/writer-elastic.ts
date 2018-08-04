@@ -1,4 +1,3 @@
-import { logger } from './logger'
 import { BulkIndexDocumentsParams, Client, IndexDocumentParams } from 'elasticsearch'
 import { Writable } from 'stream'
 import { LoggerInstance } from 'winston'
