@@ -6,8 +6,6 @@ import * as config from '../../config'
 import { logger } from '../functions/logger'
 import writerElastic from '../functions/writer-elastic'
 
-
-
 const inputFile: string = config['inputFile'] || process.argv[2]
 inputFile && runElastic()
 
