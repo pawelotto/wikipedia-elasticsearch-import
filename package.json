@@ -1,7 +1,7 @@
 {
   "name": "wikipedia-elasticsearch-import",
   "private": false,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Import complete Wikipedia dump file(s) into Elasticsearch server",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
