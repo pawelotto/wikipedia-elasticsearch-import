@@ -1,7 +1,5 @@
 import { createReadStream, createWriteStream } from 'fs'
 import * as fs from 'fs-extra'
-import { Transform } from 'stream'
-import { LoggerInstance } from 'winston'
 import * as xmlNodes from 'xml-nodes'
 import * as xmlObjects from 'xml-objects'
 import * as config from '../../config'
